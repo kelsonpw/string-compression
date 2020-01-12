@@ -13,12 +13,6 @@ function chunk(array, fn = el => el) {
   }, []);
 }
 
-function uncompressChunk(string) {
-  return Array(Number(string[1]))
-    .fill(string[0])
-    .join('');
-}
-
 function compress(string) {
   if (string.length < 2) return string;
 
@@ -28,10 +22,16 @@ function compress(string) {
   );
 }
 
+function duplicate(char, num) {
+  return Array(num)
+    .fill(char)
+    .join('');
+}
+
 function uncompress(string) {
   if (string.length < 2) return string;
 
-  return uncompressChunk(string.substr(0, 2)) + uncompress(string.substr(2));
+  return duplicate(string[0], +string[1]) + uncompress(string.substr(2));
 }
 
-module.exports = { compress, uncompress, chunk };
+module.exports = { compress, uncompress, chunk, duplicate };

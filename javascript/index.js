@@ -1,30 +1,32 @@
+function chunk(array, fn = el => el) {
+  return array.reduce((acc, el, i, arr) => {
+    if (!acc[acc.length - 1]) {
+      acc.push([el]);
+    } else {
+      if (fn(acc[acc.length - 1][0]) === fn(el)) {
+        acc[acc.length - 1].push(el);
+      } else {
+        acc.push([el]);
+      }
+    }
+    return acc;
+  }, []);
+}
+
+function uncompressChunk(string) {
+  return Array(Number(string[1]))
+    .fill(string[0])
+    .join('');
+}
+
 function compress(string) {
   if (string.length < 2) return string;
 
-  const chars = [...string];
-  let current = [];
-
-  const combine = chars => `${chars[0]}${chars.length}`;
-
-  return chars.reduce((result, char, i) => {
-    if (current[0] && current[0] !== char) {
-      result += combine(current);
-      current = [];
-    }
-    if (!current[0] || current[0] === char) {
-      current.push(char);
-    }
-    if (i === chars.length - 1) {
-      result += combine(current);
-    }
-    return result;
-  }, '');
+  return chunk([...string]).reduce(
+    (acc, chars) => `${acc}${chars[0]}${chars.length}`,
+    ''
+  );
 }
-
-const uncompressChunk = string =>
-  Array(Number(string[1]))
-    .fill(string[0])
-    .join('');
 
 function uncompress(string) {
   if (string.length < 2) return string;
@@ -32,4 +34,4 @@ function uncompress(string) {
   return uncompressChunk(string.substr(0, 2)) + uncompress(string.substr(2));
 }
 
-module.exports = { compress, uncompress };
+module.exports = { compress, uncompress, chunk };

@@ -3,16 +3,17 @@ require "minitest/autorun"
 
 class CompressorTest < Minitest::Test
   def test_compress
-    assert_equal Compressor.compress("a"), "a"
-    assert_equal Compressor.compress("aaa"), "a3"
-    assert_equal Compressor.compress("aaabbb"), "a3b3"
-    assert_equal Compressor.compress("aaabccc"), "a3b1c3"
+    assert_equal Compressor.compress("A"), "A"
+    assert_equal Compressor.compress("AAA"), "3A"
+    assert_equal Compressor.compress("AAABBB"), "3A3B"
+    assert_equal Compressor.compress("AAABCCC"), "3AB3C"
   end
 
-  def test_uncompress
-    assert_equal Compressor.uncompress("a"), "a"
-    assert_equal Compressor.uncompress("a3"), "aaa"
-    assert_equal Compressor.uncompress("a3b3"), "aaabbb"
-    assert_equal Compressor.uncompress("a3b1c3"), "aaabccc"
+  def test_decompress
+    assert_equal Compressor.decompress("A"), "A"
+    assert_equal Compressor.decompress("3A"), "AAA"
+    assert_equal Compressor.decompress("3A3B"), "AAABBB"
+    assert_equal Compressor.decompress("3AB3C"), "AAABCCC"
+    assert_equal Compressor.decompress("3A4BC"), "AAABBBBC"
   end
 end

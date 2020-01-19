@@ -14,24 +14,27 @@ function chunk(array, fn = el => el) {
 }
 
 function compress(string) {
-  if (string.length < 2) return string;
-
-  return chunk([...string]).reduce(
-    (acc, chars) => `${acc}${chars[0]}${chars.length}`,
-    ''
-  );
-}
-
-function duplicate(char, num) {
-  return Array(num)
-    .fill(char)
+  return chunk([...string])
+    .map(chars => `${chars.length > 1 ? chars.length : ''}${chars[0]}`)
     .join('');
 }
 
-function uncompress(string) {
-  if (string.length < 2) return string;
+function uncombine(chunk) {
+  if (chunk.length < 2) return chunk;
 
-  return duplicate(string[0], +string[1]) + uncompress(string.substr(2));
+  return Array(+chunk[0])
+    .fill(chunk[1])
+    .join('');
 }
 
-module.exports = { compress, uncompress, chunk, duplicate };
+function decompress(string) {
+  if (string.length < 2) return string;
+
+  const breakpoint = string[0].match(/\d/) ? 2 : 1;
+  const start = string.slice(0, breakpoint);
+  const rest = string.slice(breakpoint);
+
+  return uncombine(start) + decompress(rest);
+}
+
+module.exports = { compress, decompress, chunk };

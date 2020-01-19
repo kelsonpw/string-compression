@@ -5,17 +5,17 @@ These are solutions to a common string compression interview question.
 The idea is to compress strings like:
 
 ```js
-compress("a") === "a"
-compress("aaabccc") === "a3b1c3"
-compress("aaabbbbc") === "a3b4c1"
+compress("A") === "A"
+compress("AAABCCC") === "3AB3C"
+compress("AAABBBC") === "3A3BC"
 ```
 
 Each solution also has an uncompress method
 
 ```js
-uncompress("a") === "a"
-uncompress("a3b1c3") === "aaabccc"
-uncompress("a3b4c1") === "aaabbbbc"
+uncompress("A") === "A"
+uncompress("3AB3C") === "AAABCCC"
+uncompress("3A4BC") === "AAABBBBC"
 ```
 
 So far I have solutions in the following languages, each language has an accompanying test file:

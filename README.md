@@ -1,4 +1,4 @@
-# String Compression in Various Languages
+# String Compression/Encoding in Various Languages
 
 These are solutions to a common string compression interview question.
 
